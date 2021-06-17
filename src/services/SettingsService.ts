@@ -13,6 +13,10 @@ class SettingService {
   constructor() {
     this.settingsRepository = getCustomRepository(SettingRepository);
   }
+
+  /**
+   * Create a new setting
+   */
   async create({ chat, username }: ISettingsCreate) {
     //verify if user already exists
     const userAlreadyExists = await this.settingsRepository.findOne({
@@ -31,6 +35,31 @@ class SettingService {
     await this.settingsRepository.save(settings);
 
     return settings;
+  }
+
+  /**
+   * Return setting by user name
+   */
+  async findByUsername(username: string) {
+    const settings = await this.settingsRepository.findOne({
+      username,
+    });
+
+    return settings;
+  }
+
+  /**
+   * Update a setting
+   */
+  async update(username: string, chat: boolean) {
+    await this.settingsRepository
+      .createQueryBuilder()
+      .update(Setting)
+      .set({ chat })
+      .where("username = :username", {
+        username,
+      })
+      .execute();
   }
 }
 
