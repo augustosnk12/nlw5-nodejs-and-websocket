@@ -60,7 +60,7 @@ class SettingService {
         username,
       })
       .execute();
-  }
+  }  
 }
 
 export { SettingService };
